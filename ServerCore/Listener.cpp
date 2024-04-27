@@ -112,9 +112,10 @@ void Listener::processAccept(IocpEvent* acceptEvent)
 		return;
 	}
 
-	if (session->processAccept(NetAddress(clientAddr)))
+	NetAddress clientNetAddress(clientAddr);
+	if (session->processAccept(clientNetAddress))
 	{
-		cout << format("[Listener] session {} connected.", session->getSessionId()) << endl;
+		cout << format("[Listener] client connected. {}({}) -> session {}", clientNetAddress.getIp(), clientNetAddress.getPort(), session->getSessionId()) << endl;
 	}
 
 	registerAccept(acceptEvent);
