@@ -12,8 +12,8 @@ public:
 	uint32 getDataSize() const;
 	uint32 getFreeSize() const;
 
-	bool Read(uint32 numOfBytes);
-	bool Write(uint32 numOfBytes);
+	bool read(uint32 numOfBytes);
+	bool write(uint32 numOfBytes);
 
 	void clean();
 

@@ -39,7 +39,7 @@ uint32 RecvBuffer::getFreeSize() const
 	return _capacity - _writePos;
 }
 
-bool RecvBuffer::Read(uint32 numOfBytes)
+bool RecvBuffer::read(uint32 numOfBytes)
 {
 	if (numOfBytes > getDataSize())
 	{
@@ -50,7 +50,7 @@ bool RecvBuffer::Read(uint32 numOfBytes)
 	return true;
 }
 
-bool RecvBuffer::Write(uint32 numOfBytes)
+bool RecvBuffer::write(uint32 numOfBytes)
 {
 	if (numOfBytes > getFreeSize())
 	{

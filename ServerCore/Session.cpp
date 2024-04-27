@@ -261,7 +261,7 @@ void Session::processRecv(uint32 numOfBytes)
 {
 	_recvEvent->setOwner(nullptr);
 
-	if (numOfBytes == 0 || _recvBuffer->Write(numOfBytes) == false)
+	if (numOfBytes == 0 || _recvBuffer->write(numOfBytes) == false)
 	{
 		disconnect();
 		return;
@@ -269,7 +269,7 @@ void Session::processRecv(uint32 numOfBytes)
 
 	uint32 processedPacketSize = processPacket(numOfBytes);
 	uint32 dataSize = _recvBuffer->getDataSize();
-	if (processedPacketSize > dataSize || _recvBuffer->Read(processedPacketSize) == false)
+	if (processedPacketSize > dataSize || _recvBuffer->read(processedPacketSize) == false)
 	{
 		cout << format("[Session {}] recv overflow.", _sessionId) << endl;
 		disconnect();
@@ -292,7 +292,7 @@ uint32 Session::processPacket(uint32 numOfBytes)
 		}
 
 		uint32 remainBytes = numOfBytes - processedPacketSize;
-		if (remainBytes < sizeof(PacketHeader))
+		if (remainBytes < PacketHandler::sHeaderSize)
 		{
 			break;
 		}
