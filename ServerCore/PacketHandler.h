@@ -24,6 +24,8 @@ public:
 	static void init();
 	static void handlePacket(shared_ptr<Session> session, BYTE* packet);
 
+	static uint32 sHeaderSize;
+
 protected:
 	template<typename T>
 	inline static shared_ptr<SendBuffer> makeSendBuffer(EPacketType packetType, T* payload)
@@ -42,8 +44,5 @@ protected:
 
 private:
 	static void handleInvalid(shared_ptr<Session> session, BYTE* payload, uint32 payloadSize);
-
-private:
-	static uint32 sHeaderSize;
 };
 

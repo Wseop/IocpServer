@@ -17,12 +17,11 @@ public:
 	static bool setReuseAddress(SOCKET socket, bool flag);
 	static bool setUpdateAcceptSocket(SOCKET acceptSocket, SOCKET listenSocket);
 
-private:
-	static bool bindWindowsFunction(SOCKET socket, GUID guid, LPVOID* fn);
-
-public:
 	static LPFN_CONNECTEX WSAConnect;
 	static LPFN_DISCONNECTEX WSADisconnect;
 	static LPFN_ACCEPTEX WSAAccept;
+
+private:
+	static bool bindWindowsFunction(SOCKET socket, GUID guid, LPVOID* fn);
 };
 

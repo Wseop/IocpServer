@@ -12,6 +12,7 @@ public:
 
 	bool startAccept();
 
+private:
 	void registerAccept(IocpEvent* acceptEvent);
 	void processAccept(IocpEvent* acceptEvent);
 
