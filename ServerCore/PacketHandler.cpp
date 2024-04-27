@@ -2,11 +2,10 @@
 #include "PacketHandler.h"
 
 PacketHandlerFunc gPacketHandler[UINT16_MAX];
+uint32 PacketHandler::sHeaderSize = sizeof(PacketHeader);
 
 void PacketHandler::init()
 {
-	sHeaderSize = sizeof(PacketHeader);
-
 	for (uint32 i = 0; i < UINT16_MAX; i++)
 	{
 		gPacketHandler[i] = handleInvalid;
