@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{47c99777-7877-4406-acf6-a850a7e8ca3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{75b88523-73fb-4d55-bcb7-87aedc349d5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\IocpObject">
+      <UniqueIdentifier>{44962686-cf2e-4589-bd79-e48ff8ffae9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\Buffer">
+      <UniqueIdentifier>{5ee505fa-6a29-49e2-ab6d-98820ba01317}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\Packet">
+      <UniqueIdentifier>{a1ae8fba-4aeb-4e1f-9fa7-f7bd58379cea}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="CorePch.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreGlobal.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreTLS.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="NetAddress.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketUtils.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="IocpCore.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="IocpObject.h">
+      <Filter>Network\IocpObject</Filter>
+    </ClInclude>
+    <ClInclude Include="IocpEvent.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Listener.h">
+      <Filter>Network\IocpObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Session.h">
+      <Filter>Network\IocpObject</Filter>
+    </ClInclude>
+    <ClInclude Include="SendBuffer.h">
+      <Filter>Network\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="RecvBuffer.h">
+      <Filter>Network\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Service.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketHandler.h">
+      <Filter>Network\Packet</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="CorePch.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="CoreGlobal.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="CoreTLS.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="NetAddress.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="SocketUtils.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="IocpCore.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="IocpObject.cpp">
+      <Filter>Network\IocpObject</Filter>
+    </ClCompile>
+    <ClCompile Include="IocpEvent.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Listener.cpp">
+      <Filter>Network\IocpObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Session.cpp">
+      <Filter>Network\IocpObject</Filter>
+    </ClCompile>
+    <ClCompile Include="SendBuffer.cpp">
+      <Filter>Network\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="RecvBuffer.cpp">
+      <Filter>Network\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Service.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketHandler.cpp">
+      <Filter>Network\Packet</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
