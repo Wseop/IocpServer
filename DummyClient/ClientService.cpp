@@ -13,6 +13,5 @@ ClientService::~ClientService()
 
 bool ClientService::start()
 {
-    shared_ptr<Session> session = createSession();
-    return session->connect();
+    return true;
 }
