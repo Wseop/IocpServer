@@ -15,7 +15,7 @@ Service::Service(NetAddress netAddress, SessionFactory sessionFactory) :
 			{
 				while (true)
 				{
-					_iocpCore->dispatch(10);
+					_iocpCore->dispatchEvent(10);
 					gThreadManager->executeJobQueue();
 					gThreadManager->executeJobTimer();
 				}

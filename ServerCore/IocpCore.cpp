@@ -18,7 +18,7 @@ bool IocpCore::registerObject(shared_ptr<IocpObject> iocpObject)
 	return ::CreateIoCompletionPort(iocpObject->getHandle(), _iocpHandle, 0, 0);
 }
 
-void IocpCore::dispatch(uint32 timeoutMs)
+void IocpCore::dispatchEvent(uint32 timeoutMs)
 {
 	DWORD numOfBytes = 0;
 	ULONG_PTR dummyKey = 0;
@@ -45,7 +45,7 @@ void IocpCore::dispatch(uint32 timeoutMs)
 		shared_ptr<IocpObject> iocpObject = iocpEvent->getOwner();
 		if (iocpObject)
 		{
-			iocpObject->dispatch(iocpEvent, numOfBytes);
+			iocpObject->processEvent(iocpEvent, numOfBytes);
 		}
 	}
 }

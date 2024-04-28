@@ -9,7 +9,7 @@ public:
 	~IocpCore();
 
 	bool registerObject(shared_ptr<IocpObject> iocpObject);
-	void dispatch(uint32 timeoutMs = INFINITE);
+	void dispatchEvent(uint32 timeoutMs = INFINITE);
 
 private:
 	HANDLE _iocpHandle;

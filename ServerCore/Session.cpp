@@ -29,7 +29,7 @@ Session::~Session()
 	delete _sendEvent;
 }
 
-void Session::dispatch(IocpEvent* iocpEvent, uint32 numOfBytes)
+void Session::processEvent(IocpEvent* iocpEvent, uint32 numOfBytes)
 {
 	switch (iocpEvent->getEventType())
 	{

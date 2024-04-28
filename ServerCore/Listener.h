@@ -8,7 +8,7 @@ public:
 	Listener(uint32 acceptCount);
 	virtual ~Listener();
 
-	virtual void dispatch(IocpEvent* iocpEvent, uint32 numOfBytes) override;
+	virtual void processEvent(IocpEvent* iocpEvent, uint32 numOfBytes) override;
 
 	bool startAccept();
 

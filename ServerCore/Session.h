@@ -11,7 +11,7 @@ public:
 	Session();
 	virtual ~Session();
 
-	virtual void dispatch(IocpEvent* iocpEvent, uint32 numOfBytes) override;
+	virtual void processEvent(IocpEvent* iocpEvent, uint32 numOfBytes) override;
 
 	inline uint32 getSessionId() const { return _sessionId; }
 	inline void setSessionId(uint32 sessionId) { _sessionId = sessionId; }

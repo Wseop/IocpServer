@@ -9,7 +9,7 @@ public:
 	IocpObject();
 	virtual ~IocpObject();
 
-	virtual void dispatch(IocpEvent* iocpEvent, uint32 numOfBytes) abstract;
+	virtual void processEvent(IocpEvent* iocpEvent, uint32 numOfBytes) abstract;
 
 	inline SOCKET getSocket() const { return _socket; }
 	inline HANDLE getHandle() const { return reinterpret_cast<HANDLE>(_socket); }

@@ -19,7 +19,7 @@ Listener::~Listener()
 	_acceptEvents.clear();
 }
 
-void Listener::dispatch(IocpEvent* iocpEvent, uint32 numOfBytes)
+void Listener::processEvent(IocpEvent* iocpEvent, uint32 numOfBytes)
 {
 	assert(iocpEvent->getEventType() == EEventType::Accept);
 	processAccept(iocpEvent);
