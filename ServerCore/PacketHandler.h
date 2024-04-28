@@ -1,10 +1,11 @@
 #pragma once
 
 #include "SendBuffer.h"
+#include "Protocol.pb.h"
 
 enum class EPacketType : uint16
 {
-
+	Ping,
 };
 
 struct PacketHeader
@@ -23,6 +24,8 @@ class PacketHandler
 public:
 	static void init();
 	static void handlePacket(shared_ptr<Session> session, BYTE* packet);
+
+	inline static shared_ptr<SendBuffer> makePing(Protocol::Ping* payload) { return makeSendBuffer(EPacketType::Ping, payload); }
 
 	static uint32 sHeaderSize;
 
