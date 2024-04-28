@@ -2,12 +2,25 @@
 #include "Service.h"
 #include "IocpCore.h"
 #include "Session.h"
+#include "ThreadManager.h"
 
 Service::Service(NetAddress netAddress, SessionFactory sessionFactory) :
 	_iocpCore(make_shared<IocpCore>()),
 	_netAddress(netAddress),
 	_sessionFactory(sessionFactory)
 {
+	for (uint32 i = 0; i < thread::hardware_concurrency(); i++)
+	{
+		gThreadManager->launch([this]()
+			{
+				while (true)
+				{
+					_iocpCore->dispatch(10);
+					gThreadManager->executeJobQueue();
+					gThreadManager->executeJobTimer();
+				}
+			});
+	}
 }
 
 Service::~Service()
