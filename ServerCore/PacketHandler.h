@@ -17,7 +17,6 @@ struct PacketHeader
 class Session;
 
 using PacketHandlerFunc = function<void(shared_ptr<Session>, BYTE*, uint32)>;
-extern PacketHandlerFunc gPacketHandler[UINT16_MAX];
 
 class PacketHandler
 {
@@ -47,5 +46,7 @@ protected:
 
 private:
 	static void handleInvalid(shared_ptr<Session> session, BYTE* payload, uint32 payloadSize);
+
+	static PacketHandlerFunc packetHandler[UINT16_MAX];
 };
 
