@@ -9,7 +9,5 @@ int main()
     shared_ptr<ClientService> service = make_shared<ClientService>(NetAddress("127.0.0.1", 7777), []() { return make_shared<PacketSession>(); });
     assert(service->start());
 
-    cout << "[Client] Start." << endl;
-
     while (true);
 }

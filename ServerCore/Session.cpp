@@ -232,6 +232,8 @@ void Session::processDisconnect()
 	service->eraseSession(dynamic_pointer_cast<Session>(shared_from_this()));
 
 	onDisconnected();
+
+	cout << format("[Session {}] disconnected.", _sessionId) << endl;
 }
 
 void Session::registerRecv()

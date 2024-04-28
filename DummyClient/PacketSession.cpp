@@ -12,6 +12,7 @@ PacketSession::~PacketSession()
 
 void PacketSession::onConnected()
 {
+	cout << "[PacketSession] connected to server." << endl;
 }
 
 void PacketSession::onDisconnected()
