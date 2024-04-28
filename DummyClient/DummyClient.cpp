@@ -3,6 +3,9 @@
 #include "ClientService.h"
 #include "PacketSession.h"
 #include "Protocol.pb.h"
+#include "HealthChecker.h"
+#include "JobQueue.h"
+#include "Job.h"
 
 int main()
 {
@@ -12,13 +15,9 @@ int main()
 
     shared_ptr<Session> session = service->createSession();
     assert(session->connect());
-
     
-    Protocol::Ping pingPayload;
-    while (true)
-    {
-        session->send(ClientPacketHandler::makePing(&pingPayload));
-
-        this_thread::sleep_for(1s);
-    }
+    gHealthChecker = make_shared<HealthChecker>(session);
+    gHealthChecker->getJobQueue()->pushJob(make_shared<Job>(gHealthChecker, &HealthChecker::sendPing));
+    
+    while (true);
 }
