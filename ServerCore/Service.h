@@ -13,9 +13,9 @@ public:
 
 	virtual bool start() abstract;
 
-	inline const NetAddress& getNetAddress() const { return _netAddress; }
-
 	inline const shared_ptr<IocpCore> getIocpCore() const { return _iocpCore; }
+
+	inline const NetAddress& getNetAddress() const { return _netAddress; }
 
 	shared_ptr<Session> createSession();
 	void insertSession(shared_ptr<Session> session);
