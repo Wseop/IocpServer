@@ -44,9 +44,9 @@ protected:
 		return sendBuffer;
 	}
 
+	static PacketHandlerFunc packetHandler[UINT16_MAX];
+
 private:
 	static void handleInvalid(shared_ptr<Session> session, BYTE* payload, uint32 payloadSize);
-
-	static PacketHandlerFunc packetHandler[UINT16_MAX];
 };
 

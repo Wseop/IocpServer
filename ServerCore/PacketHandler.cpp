@@ -2,6 +2,7 @@
 #include "PacketHandler.h"
 
 uint32 PacketHandler::sHeaderSize = sizeof(PacketHeader);
+PacketHandlerFunc PacketHandler::packetHandler[UINT16_MAX];
 
 void PacketHandler::init()
 {
