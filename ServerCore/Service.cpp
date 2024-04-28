@@ -33,6 +33,7 @@ shared_ptr<Session> Service::createSession()
 
 	shared_ptr<Session> session = _sessionFactory();
 	session->setSessionId(sSessionId.fetch_add(1));
+	session->setService(shared_from_this());
 	return session;
 }
 
