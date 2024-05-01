@@ -4,6 +4,8 @@
 #include "Service.h"
 #include "IocpCore.h"
 #include "Session.h"
+#include "JobQueue.h"
+#include "Job.h"
 
 Listener::Listener(uint32 acceptCount) :
 	_acceptCount(acceptCount)
@@ -71,7 +73,9 @@ void Listener::registerAccept(IocpEvent* acceptEvent)
 		{
 			acceptEvent->setOwner(nullptr);
 			acceptEvent->setSession(nullptr);
-			// TODO. add to JobQueue. retry.
+
+			// retry.
+			service->getJobQueue()->pushJob(make_shared<Job>(dynamic_pointer_cast<Listener>(shared_from_this()), &Listener::registerAccept, acceptEvent));
 			cout << "[Listener] Accept fail." << endl;
 		}
 	}

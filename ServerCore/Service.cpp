@@ -3,11 +3,13 @@
 #include "IocpCore.h"
 #include "Session.h"
 #include "ThreadManager.h"
+#include "JobQueue.h"
 
 Service::Service(NetAddress netAddress, SessionFactory sessionFactory) :
 	_iocpCore(make_shared<IocpCore>()),
 	_netAddress(netAddress),
-	_sessionFactory(sessionFactory)
+	_sessionFactory(sessionFactory),
+	_jobQueue(make_shared<JobQueue>())
 {
 	for (uint32 i = 0; i < thread::hardware_concurrency(); i++)
 	{

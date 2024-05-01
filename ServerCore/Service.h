@@ -2,6 +2,7 @@
 
 class IocpCore;
 class Session;
+class JobQueue;
 
 using SessionFactory = function<shared_ptr<Session>(void)>;
 
@@ -22,6 +23,8 @@ public:
 	void eraseSession(shared_ptr<Session> session);
 	const set<shared_ptr<Session>>& getSessions() const;
 
+	inline const shared_ptr<JobQueue> getJobQueue() const { return _jobQueue; }
+
 private:
 	shared_ptr<IocpCore> _iocpCore;
 
@@ -30,5 +33,7 @@ private:
 	mutex _mutex;
 	SessionFactory _sessionFactory;
 	set<shared_ptr<Session>> _sessions;
+
+	shared_ptr<JobQueue> _jobQueue;
 };
 
