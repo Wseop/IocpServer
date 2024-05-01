@@ -6,9 +6,9 @@ public:
 	SendBuffer(uint32 bufferSize);
 	~SendBuffer();
 
-	BYTE* getBuffer() { return _buffer.data(); }
+	inline BYTE* getBuffer() { return _buffer.data(); }
 
-	uint32 getBufferSize() const { return _bufferSize; }
+	inline uint32 getBufferSize() const { return _bufferSize; }
 
 private:
 	vector<BYTE> _buffer;
