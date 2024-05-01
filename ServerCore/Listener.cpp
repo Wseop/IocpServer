@@ -28,18 +28,10 @@ void Listener::processEvent(IocpEvent* iocpEvent, uint32 numOfBytes)
 bool Listener::startAccept()
 {
 	shared_ptr<Service> service = getService();
-	if (service == nullptr)
-	{
-		cout << "[Listener] service is nullptr." << endl;
-		return false;
-	}
+	assert(service);
 
 	shared_ptr<IocpCore> iocpCore = service->getIocpCore();
-	if (iocpCore == nullptr)
-	{
-		cout << "[Listener] iocpCore is nullptr." << endl;
-		return false;
-	}
+	assert(iocpCore);
 
 	if (iocpCore->registerObject(shared_from_this()) == false ||
 		SocketUtils::setLinger(_socket, 0, 0) == false ||
@@ -64,11 +56,7 @@ bool Listener::startAccept()
 void Listener::registerAccept(IocpEvent* acceptEvent)
 {
 	shared_ptr<Service> service = getService();
-	if (service == nullptr)
-	{
-		cout << "[Listener] service is nullptr." << endl;
-		return;
-	}
+	assert(service);
 
 	acceptEvent->init();
 	acceptEvent->setOwner(shared_from_this());
