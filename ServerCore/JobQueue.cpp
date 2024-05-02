@@ -24,10 +24,6 @@ void JobQueue::pushJob(shared_ptr<Job> job)
 			gWaitJobQueue->push(shared_from_this());
 		}
 	}
-	else
-	{
-		gWaitJobQueue->push(shared_from_this());
-	}
 }
 
 void JobQueue::executeJobs()
