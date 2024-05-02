@@ -6,6 +6,8 @@
 #include "Service.h"
 #include "IocpCore.h"
 #include "PacketHandler.h"
+#include "JobQueue.h"
+#include "Job.h"
 
 const uint32 BUFFER_SIZE = 0x1000;
 
@@ -253,8 +255,10 @@ void Session::registerRecv()
 		if (errorCode != WSA_IO_PENDING)
 		{
 			_recvEvent->setOwner(nullptr);
+			// retry.
+			getService()->getJobQueue()->pushJob(make_shared<Job>(dynamic_pointer_cast<Session>(shared_from_this()), &Session::registerRecv));
+
 			cout << format("[Session {}] Recv error : {}", _sessionId, errorCode) << endl;
-			// TODO. add to JobQueue. retry.
 		}
 	}
 }
