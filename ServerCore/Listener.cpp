@@ -75,9 +75,10 @@ void Listener::registerAccept(IocpEvent* acceptEvent)
 			acceptEvent->setOwner(nullptr);
 			acceptEvent->setSession(nullptr);
 
+			cout << "[Listener] Accept Error : " << errorCode << endl;
+
 			// retry.
 			service->getJobQueue()->pushJob(make_shared<Job>(dynamic_pointer_cast<Listener>(shared_from_this()), &Listener::registerAccept, acceptEvent));
-			cout << "[Listener] Accept fail." << endl;
 		}
 	}
 }
