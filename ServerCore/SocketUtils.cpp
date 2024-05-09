@@ -74,6 +74,11 @@ bool SocketUtils::setUpdateAcceptSocket(SOCKET acceptSocket, SOCKET listenSocket
 	return SOCKET_ERROR != ::setsockopt(acceptSocket, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, reinterpret_cast<const char*>(&listenSocket), sizeof(listenSocket));
 }
 
+bool SocketUtils::setTcpNoDelay(SOCKET socket, bool flag)
+{
+	return SOCKET_ERROR != ::setsockopt(socket, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(&flag), sizeof(flag));
+}
+
 bool SocketUtils::bindWindowsFunction(SOCKET socket, GUID guid, LPVOID* fn)
 {
 	DWORD bytes = 0;

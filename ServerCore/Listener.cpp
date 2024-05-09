@@ -38,6 +38,7 @@ bool Listener::startAccept()
 	if (iocpCore->registerObject(shared_from_this()) == false ||
 		SocketUtils::setLinger(_socket, 0, 0) == false ||
 		SocketUtils::setReuseAddress(_socket, true) == false ||
+		SocketUtils::setTcpNoDelay(_socket, true) == false ||
 		SocketUtils::bind(_socket, service->getNetAddress()) == false ||
 		SocketUtils::listen(_socket) == false)
 	{

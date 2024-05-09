@@ -16,6 +16,7 @@ public:
 	static bool setLinger(SOCKET socket, uint16 onoff, uint16 linger);
 	static bool setReuseAddress(SOCKET socket, bool flag);
 	static bool setUpdateAcceptSocket(SOCKET acceptSocket, SOCKET listenSocket);
+	static bool setTcpNoDelay(SOCKET socket, bool flag);
 
 	static LPFN_CONNECTEX WSAConnect;
 	static LPFN_DISCONNECTEX WSADisconnect;

@@ -159,6 +159,7 @@ bool Session::registerConnect()
 
 	if (iocpCore->registerObject(shared_from_this()) == false ||
 		SocketUtils::setReuseAddress(_socket, true) == false ||
+		SocketUtils::setTcpNoDelay(_socket, true) == false ||
 		SocketUtils::bindAnyAddress(_socket, 0) == false)
 	{
 		cout << format("[Session {}] socket initialize fail.", _sessionId) << endl;
