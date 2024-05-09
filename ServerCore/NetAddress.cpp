@@ -10,11 +10,11 @@ NetAddress::NetAddress(const SOCKADDR_IN& sockAddr) :
 {
 }
 
-NetAddress::NetAddress(string ip, uint16 port)
+NetAddress::NetAddress(const string& ip, uint16 port)
 {
 	::memset(&_sockAddr, 0, sizeof(_sockAddr));
 	_sockAddr.sin_family = AF_INET;
-	_sockAddr.sin_addr = ipToAddress(ip);
+	::InetPtonA(AF_INET, ip.c_str(), &_sockAddr.sin_addr);
 	_sockAddr.sin_port = ::htons(port);
 }
 
@@ -28,11 +28,4 @@ string NetAddress::getIp() const
 uint16 NetAddress::getPort() const
 {
 	return ::ntohs(_sockAddr.sin_port);
-}
-
-IN_ADDR NetAddress::ipToAddress(const string& ip)
-{
-	IN_ADDR address;
-	::InetPtonA(AF_INET, ip.c_str(), &address);
-	return address;
 }
