@@ -6,16 +6,17 @@
 IocpCore::IocpCore() :
 	_iocpHandle(::CreateIoCompletionPort(INVALID_HANDLE_VALUE, 0, 0, 0))
 {
+	assert(_iocpHandle != INVALID_HANDLE_VALUE);
 }
 
 IocpCore::~IocpCore()
 {
-	assert(::CloseHandle(_iocpHandle));
+	::CloseHandle(_iocpHandle);
 }
 
 bool IocpCore::registerObject(shared_ptr<IocpObject> iocpObject)
 {
-	return ::CreateIoCompletionPort(iocpObject->getHandle(), _iocpHandle, 0, 0);
+	return INVALID_HANDLE_VALUE != ::CreateIoCompletionPort(iocpObject->getHandle(), _iocpHandle, 0, 0);
 }
 
 void IocpCore::dispatchEvent(uint32 timeoutMs)
