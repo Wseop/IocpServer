@@ -52,6 +52,8 @@ private:
 	void registerSend();
 	void processSend(uint32 numOfBytes);
 
+	void handleError(int32 errorCode, const char* desc);
+
 private:
 	uint32 _sessionId;
 

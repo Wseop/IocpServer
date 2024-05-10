@@ -175,7 +175,7 @@ bool Session::registerConnect()
 		if (errorCode != WSA_IO_PENDING)
 		{
 			_connectEvent->setOwner(nullptr);
-			cout << format("[Session {}] Connect error : {}", _sessionId, errorCode) << endl;
+			handleError(errorCode, "Connect");
 			return false;
 		}
 	}
@@ -211,7 +211,7 @@ bool Session::registerDisconnect()
 		if (errorCode != WSA_IO_PENDING)
 		{
 			_disconnectEvent->setOwner(nullptr);
-			cout << format("[Session {}] Disconnect error : {}", _sessionId, errorCode) << endl;
+			handleError(errorCode, "Disconnect");
 			return false;
 		}
 	}
@@ -259,10 +259,7 @@ void Session::registerRecv()
 		if (errorCode != WSA_IO_PENDING)
 		{
 			_recvEvent->setOwner(nullptr);
-			// retry.
-			getService()->getJobQueue()->pushJob(make_shared<Job>(dynamic_pointer_cast<Session>(shared_from_this()), &Session::registerRecv));
-
-			cout << format("[Session {}] Recv error : {}", _sessionId, errorCode) << endl;
+			handleError(errorCode, "Recv");
 		}
 	}
 }
@@ -353,7 +350,7 @@ void Session::registerSend()
 			_sendEvent->setOwner(nullptr);
 			_sendEvent->clearSendBuffers();
 			_bSendRegistered.store(false);
-			cout << format("[Session {}] Send error : {}", _sessionId, errorCode) << endl;
+			handleError(errorCode, "Send");
 		}
 	}
 }
@@ -388,4 +385,18 @@ void Session::processSend(uint32 numOfBytes)
 	}
 
 	onSend(numOfBytes);
+}
+
+void Session::handleError(int32 errorCode, const char* desc)
+{
+	switch (errorCode)
+	{
+	case WSAECONNRESET:
+	case WSAECONNABORTED:
+		disconnect();
+		break;
+	default:
+		cout << format("[Session {}] {} Error : {}", _sessionId, errorCode, desc) << endl;
+		break;
+	}
 }
