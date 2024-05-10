@@ -9,8 +9,6 @@
 #include "JobQueue.h"
 #include "Job.h"
 
-const uint32 BUFFER_SIZE = 0x1000;
-
 Session::Session() :
 	_sessionId(0),
 	_bConnected(false),
@@ -273,7 +271,7 @@ void Session::processRecv(uint32 numOfBytes)
 {
 	_recvEvent->setOwner(nullptr);
 
-	if (numOfBytes == 0 || _recvBuffer->write(numOfBytes) == false)
+	if (numOfBytes == 0 || _recvBuffer->moveWritePos(numOfBytes) == false)
 	{
 		disconnect();
 		return;
@@ -281,13 +279,13 @@ void Session::processRecv(uint32 numOfBytes)
 
 	uint32 processedPacketSize = processPacket(numOfBytes);
 	uint32 dataSize = _recvBuffer->getDataSize();
-	if (processedPacketSize > dataSize || _recvBuffer->read(processedPacketSize) == false)
+	if (processedPacketSize > dataSize || _recvBuffer->moveReadPos(processedPacketSize) == false)
 	{
 		cout << format("[Session {}] recv overflow.", _sessionId) << endl;
 		disconnect();
 		return;
 	}
-	_recvBuffer->clean();
+	_recvBuffer->cleanPos();
 	registerRecv();
 }
 

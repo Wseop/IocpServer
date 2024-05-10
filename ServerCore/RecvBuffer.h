@@ -2,6 +2,8 @@
 
 class RecvBuffer
 {
+	const uint32 BUFFER_COUNT = 10;
+
 public:
 	RecvBuffer(uint32 bufferSize);
 	~RecvBuffer();
@@ -12,13 +14,12 @@ public:
 	uint32 getDataSize() const;
 	uint32 getFreeSize() const;
 
-	bool read(uint32 numOfBytes);
-	bool write(uint32 numOfBytes);
+	bool moveReadPos(uint32 numOfBytes);
+	bool moveWritePos(uint32 numOfBytes);
 
-	void clean();
+	void cleanPos();
 
 private:
-	const uint32 _bufferCount;
 	const uint32 _bufferSize;
 	const uint32 _capacity;
 

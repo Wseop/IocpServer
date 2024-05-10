@@ -2,9 +2,8 @@
 #include "RecvBuffer.h"
 
 RecvBuffer::RecvBuffer(uint32 bufferSize) :
-	_bufferCount(10),
 	_bufferSize(bufferSize),
-	_capacity(_bufferCount * _bufferSize),
+	_capacity(BUFFER_COUNT * _bufferSize),
 	_readPos(0),
 	_writePos(0)
 {
@@ -39,7 +38,7 @@ uint32 RecvBuffer::getFreeSize() const
 	return _capacity - _writePos;
 }
 
-bool RecvBuffer::read(uint32 numOfBytes)
+bool RecvBuffer::moveReadPos(uint32 numOfBytes)
 {
 	if (numOfBytes > getDataSize())
 	{
@@ -50,7 +49,7 @@ bool RecvBuffer::read(uint32 numOfBytes)
 	return true;
 }
 
-bool RecvBuffer::write(uint32 numOfBytes)
+bool RecvBuffer::moveWritePos(uint32 numOfBytes)
 {
 	if (numOfBytes > getFreeSize())
 	{
@@ -61,7 +60,7 @@ bool RecvBuffer::write(uint32 numOfBytes)
 	return true;
 }
 
-void RecvBuffer::clean()
+void RecvBuffer::cleanPos()
 {
 	uint32 dataSize = getDataSize();
 	if (dataSize == 0)

@@ -7,6 +7,8 @@ class SendBuffer;
 
 class Session : public IocpObject
 {
+	const uint32 BUFFER_SIZE = 0x1000;
+
 public:
 	Session();
 	virtual ~Session();
