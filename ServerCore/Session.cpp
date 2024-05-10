@@ -365,6 +365,12 @@ void Session::processSend(uint32 numOfBytes)
 	_sendEvent->setOwner(nullptr);
 	_sendEvent->clearSendBuffers();
 
+	if (numOfBytes == 0)
+	{
+		disconnect();
+		return;
+	}
+
 	bool bRegisterSend = false;
 	{
 		lock_guard<mutex> lock(_mutex);
