@@ -241,6 +241,11 @@ void Session::processDisconnect()
 
 void Session::registerRecv()
 {
+	if (isConnected() == false)
+	{
+		return;
+	}
+
 	_recvEvent->init();
 	_recvEvent->setOwner(shared_from_this());
 
