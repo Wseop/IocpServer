@@ -36,7 +36,11 @@ public:
 private:
 	EEventType _eventType;
 	shared_ptr<IocpObject> _owner;
+
+	// Accept Type
 	shared_ptr<Session> _session;
+
+	// Send Type.
 	vector<shared_ptr<SendBuffer>> _sendBuffers;
 };
 

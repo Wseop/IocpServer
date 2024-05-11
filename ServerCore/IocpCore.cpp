@@ -16,6 +16,7 @@ IocpCore::~IocpCore()
 
 bool IocpCore::registerObject(shared_ptr<IocpObject> iocpObject)
 {
+	// CompletionKey 사용하지 않음. Overlapped(IocpEvent)로 전달.
 	return INVALID_HANDLE_VALUE != ::CreateIoCompletionPort(iocpObject->getHandle(), _iocpHandle, 0, 0);
 }
 

@@ -7,6 +7,8 @@ RecvBuffer::RecvBuffer(uint32 bufferSize) :
 	_readPos(0),
 	_writePos(0)
 {
+	// buffer의 크기는 BUFFER_COUNT * _bufferSize로 설정.
+	// 커서 초기화 시(cleanPos) 복사가 일어날 확률을 줄임.
 	_buffer.resize(_capacity);
 }
 
@@ -65,11 +67,13 @@ void RecvBuffer::cleanPos()
 	uint32 dataSize = getDataSize();
 	if (dataSize == 0)
 	{
+		// 복사할 데이터가 없는 상황. 커서만 초기화.
 		_readPos = 0;
 		_writePos = 0;
 	}
 	else if (getFreeSize() < _bufferSize)
 	{
+		// 데이터를 맨 앞으로 복사 후 커서 정리.
 		::memcpy(_buffer.data(), getReadPos(), dataSize);
 		_readPos = 0;
 		_writePos = dataSize;
