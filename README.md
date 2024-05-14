@@ -1,5 +1,11 @@
 # IocpServer
 **IOCP 모델을 활용하여 구현한 서버 라이브러리**
+
+## 목차
+[1. IOCP 설계 구조](#iocp-설계-구조)
+
+[2. Packet 직렬화](#packet-직렬화)
+
 ## IOCP 설계 구조
 ![image](https://github.com/Wseop/IocpServer/assets/18005580/ec0cb6a6-e8f9-40a7-bfcc-2b6ed18687bc)
 - 각종 소켓 함수는 `IocpObject`에서 호출되며, `IocpEvent(OVERLAPPED)` 객체에 자신의 정보를 넣어서 전달.
