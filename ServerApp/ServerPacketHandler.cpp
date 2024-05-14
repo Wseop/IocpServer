@@ -12,5 +12,8 @@ void ServerPacketHandler::init()
 void ServerPacketHandler::handlePing(shared_ptr<Session> session, BYTE* payload, uint32 payloadSize)
 {
 	Protocol::Ping pingPayload;
-	session->send(makePing(&pingPayload));
+	if (pingPayload.ParseFromArray(payload, payloadSize))
+	{
+		session->send(makePing(&pingPayload));
+	}
 }
