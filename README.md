@@ -74,7 +74,7 @@ void IocpCore::dispatchEvent(uint32 timeoutMs)
 <hr>
 
 ## Packet 직렬화
-**메모리 상에 존재하는 인스턴스 등의 데이터를 파일 혹은 네트워크로 송수신하기 위해 바이트 배열의 형태로 밀어넣는 작업**
+**메모리 상에 존재하는 데이터를 파일 혹은 네트워크로 송수신하기 위해 바이트 배열의 형태로 밀어넣는 작업**
 ### Protocol Buffers
 구글에서 개발한 직렬화 라이브러리
 ### Packet 설계
