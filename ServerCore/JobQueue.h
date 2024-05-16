@@ -7,7 +7,7 @@ class JobQueue : public enable_shared_from_this<JobQueue>
 public:
 	JobQueue();
 
-	void pushJob(shared_ptr<Job> job);
+	void pushJob(shared_ptr<Job> job, bool bPushOnly = false);
 	void executeJobs();
 
 private:

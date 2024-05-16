@@ -7,14 +7,14 @@ JobQueue::JobQueue() :
 {
 }
 
-void JobQueue::pushJob(shared_ptr<Job> job)
+void JobQueue::pushJob(shared_ptr<Job> job, bool bPushOnly)
 {
 	const uint32 prevJobCount = _jobCount.fetch_add(1);
 	_jobs.push(job);
 
 	if (prevJobCount == 0)
 	{
-		if (tJobQueue == nullptr)
+		if (tJobQueue == nullptr && bPushOnly == false)
 		{
 			tJobQueue = shared_from_this();
 			executeJobs();

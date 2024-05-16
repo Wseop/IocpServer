@@ -30,7 +30,8 @@ void JobTimer::distributeReservedJobs()
 		}
 		else if (reservedJob->startTick <= currentTick)
 		{
-			reservedJob->jobOwner->pushJob(reservedJob->job);
+			// distribute중에 job을 처리하러 들어가는 상황을 방지하기 위해 bPushOnly를 true로 설정하여 push.
+			reservedJob->jobOwner->pushJob(reservedJob->job, true);
 		}
 		else
 		{
