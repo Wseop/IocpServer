@@ -13,5 +13,7 @@ ClientService::~ClientService()
 
 bool ClientService::start()
 {
+    assert(Service::start());
+
     return true;
 }

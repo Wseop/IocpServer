@@ -12,7 +12,7 @@ public:
 	Service(NetAddress netAddress, SessionFactory sessionFactory);
 	virtual ~Service();
 
-	virtual bool start() abstract;
+	virtual bool start();
 
 	inline const shared_ptr<IocpCore> getIocpCore() const { return _iocpCore; }
 

@@ -14,6 +14,8 @@ ServerService::~ServerService()
 
 bool ServerService::start()
 {
+	assert(Service::start());
+
 	_listener->setService(shared_from_this());
 	return _listener->startAccept();
 }

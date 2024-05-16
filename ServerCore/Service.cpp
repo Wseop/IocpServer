@@ -11,22 +11,28 @@ Service::Service(NetAddress netAddress, SessionFactory sessionFactory) :
 	_sessionFactory(sessionFactory),
 	_jobQueue(make_shared<JobQueue>())
 {
+}
+
+Service::~Service()
+{
+}
+
+bool Service::start()
+{
 	for (uint32 i = 0; i < thread::hardware_concurrency(); i++)
 	{
-		gThreadManager->launch([this]()
+		gThreadManager->launch([self = shared_from_this()]()
 			{
 				while (true)
 				{
-					_iocpCore->dispatchEvent(10);
+					self->_iocpCore->dispatchEvent(10);
 					gThreadManager->executeJobQueue();
 					gThreadManager->executeJobTimer();
 				}
 			});
 	}
-}
 
-Service::~Service()
-{
+	return true;
 }
 
 shared_ptr<Session> Service::createSession()
