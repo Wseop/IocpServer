@@ -12,6 +12,8 @@
 
 [2. Packet 직렬화](#packet-직렬화)
 
+[3. Job과 JobQueue](#job과-jobqueue)
+
 ## IOCP 설계 구조
 ![image](https://github.com/Wseop/IocpServer/assets/18005580/ec0cb6a6-e8f9-40a7-bfcc-2b6ed18687bc)
 - 각종 소켓 함수는 `IocpObject`에서 호출되며, `IocpEvent(OVERLAPPED)` 객체에 자신의 정보를 넣어서 전달.
@@ -77,7 +79,9 @@ void IocpCore::dispatchEvent(uint32 timeoutMs)
 }
 ```
 
-<hr>
+#
+
+<br>
 
 ## Packet 직렬화
 **Protocol Buffers 라이브러리를 사용하여 구현하였습니다.**
@@ -137,4 +141,79 @@ void ServerPacketHandler::handleC_Login(shared_ptr<Session> session, BYTE* paylo
 }
 ```
 
-<hr>
+#
+
+<br>
+
+## Job과 JobQueue
+**Command 패턴을 적용하여 요청된 작업들을 처리하도록 구현하였으며, 작업들은 `Job` 객체로 생성되어 `JobQueue`에 추가되어 처리되도록 하였습니다.** <br>
+### JobQueue 설계 구조
+#### Lock을 잡고있는 범위를 최소화하기 위해 모든 요청들을 `Job`으로 처리하고 하나의 `JobQueue`는 하나의 thread만 접근하여 처리하는 구조.
+![image](https://github.com/Wseop/IocpServer/assets/18005580/04eaa7bb-5223-41b1-81ae-9749bc323e48)
+### Job의 추가
+#### 로그인 요청을 처리하는 코드 예제
+- PacketHandler에서 수신한 데이터를 역직렬화 후 방에 입장하는 함수를 호출.
+- 곧바로 처리하는 것이 아니라 `JobQueue`에 의해 처리되도록 `Job`의 형태로 만들어줌.
+```cpp
+void ServerPacketHandler::handleC_Login(shared_ptr<Session> session, BYTE* payload, uint32 payloadSize)
+{
+	Protocol::C_Login loginPayload;
+	if (loginPayload.ParseFromArray(payload, payloadSize))
+	{
+		gRoom->enterUser(session, loginPayload.userid());
+	}
+}
+```
+```cpp
+void Room::enterUser(shared_ptr<Session> session, const string& userId)
+{
+	_jobQueue->pushJob(make_shared<Job>(shared_from_this(), &Room::_enterUser, dynamic_pointer_cast<PacketSession>(session), userId));
+}
+```
+#### `pushJob()`
+- `JobQueue`에 `Job`을 추가하는 함수.
+- 가장 처음 push한 thread가 `JobQueue`를 할당받아 `Job`들을 처리하게 됨.
+- 가장 처음 push하였지만, 당장 처리할 수 없는 경우 **Global Wait Queue**에 추가하여 다른 thread에게 넘김.
+```cpp
+void JobQueue::pushJob(shared_ptr<Job> job, bool bPushOnly)
+{
+	const uint32 prevJobCount = _jobCount.fetch_add(1);
+	_jobs.push(job);
+
+	if (prevJobCount == 0)
+	{
+		if (tJobQueue == nullptr && bPushOnly == false)
+		{
+			tJobQueue = shared_from_this();
+			executeJobs();
+		}
+		else
+		{
+			gWaitJobQueue->push(shared_from_this());
+		}
+	}
+}
+```
+### JobQueue의 처리
+#### `executeJobs()`
+- 하나의 thread에 할당되어 들어있는 모든 `Job`들이 처리됨.
+- 소유권을 놓아주는 과정에서 `jobCount`를 체크하여 남은 `Job`이 있다면 **Global Wait Queue**에 넣음.
+```cpp
+void JobQueue::executeJobs()
+{
+	uint32 executeCount = 0;
+	shared_ptr<Job> job = nullptr;
+	while (_jobs.try_pop(job))
+	{
+		executeCount++;
+		job->execute();
+	}
+
+	if (_jobCount.fetch_sub(executeCount) != executeCount)
+	{
+		gWaitJobQueue->push(shared_from_this());
+	}
+
+	tJobQueue = nullptr;
+}
+```
