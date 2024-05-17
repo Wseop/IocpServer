@@ -14,6 +14,8 @@
 
 [3. Job과 JobQueue](#job과-jobqueue)
 
+[4. Service](#service)
+
 ## IOCP 설계 구조
 ![image](https://github.com/Wseop/IocpServer/assets/18005580/ec0cb6a6-e8f9-40a7-bfcc-2b6ed18687bc)
 - 각종 소켓 함수는 `IocpObject`에서 호출되며, `IocpEvent(OVERLAPPED)` 객체에 자신의 정보를 넣어서 전달.
@@ -215,5 +217,33 @@ void JobQueue::executeJobs()
 	}
 
 	tJobQueue = nullptr;
+}
+```
+
+#
+
+<br>
+
+## Service
+**시작될 때 IocpCore, worker thread들을 생성하고 session들을 관리합니다.**
+### worker thread
+- `IocpEvent`, `JobQueue`를 처리하는 thread
+```cpp
+bool Service::start()
+{
+	for (uint32 i = 0; i < thread::hardware_concurrency(); i++)
+	{
+		gThreadManager->launch([self = shared_from_this()]()
+			{
+				while (true)
+				{
+					self->_iocpCore->dispatchEvent(10);
+					gThreadManager->executeJobQueue();
+					gThreadManager->executeJobTimer();
+				}
+			});
+	}
+
+	return true;
 }
 ```
