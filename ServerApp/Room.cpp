@@ -74,6 +74,6 @@ void Room::_exitUser(string userId)
 
 void Room::_handleChat(shared_ptr<PacketSession> session, string msg)
 {
-	string userMsg = format("[{}] {}", session->getUserId(), msg);
+	string userMsg = format("[{}] > {}", session->getUserId(), msg);
 	broadcast(ServerPacketHandler::makeS_Chat(userMsg));
 }

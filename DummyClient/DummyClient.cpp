@@ -12,19 +12,26 @@ int main()
     shared_ptr<ClientService> service = make_shared<ClientService>(NetAddress("127.0.0.1", 7777), []() { return make_shared<PacketSession>(); });
     assert(service->start());
 
-    shared_ptr<Session> session = service->createSession();
-    assert(session->connect());
+    srand(time(nullptr));
 
     while (true)
     {
-        // 1초마다 메세지 전송
-        if (shared_ptr<PacketSession> packetSession = dynamic_pointer_cast<PacketSession>(session))
+        // 접속
+        shared_ptr<PacketSession> session = dynamic_pointer_cast<PacketSession>(service->createSession());
+        session->connect();
+        
+        // 로그인 대기
+        while (session->IsLoggedIn() == false);
+
+        // 1초 간격으로 메세지 전송. 10 ~ 30회 랜덤
+        int32 count = rand() % 30 + 10;
+        for (uint32 i = 0; i < count; i++)
         {
-            if (packetSession->IsLoggedIn())
-            {
-                packetSession->sendMsg(format("Hello I'm {}", packetSession->getUserId()));
-            }
+            session->sendMsg(format("Hello I'm [{}]", session->getUserId()));
+            this_thread::sleep_for(1s);
         }
-        this_thread::sleep_for(1s);
+
+        // 접속 종료
+        session->disconnect();
     }
 }
