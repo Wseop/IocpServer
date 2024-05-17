@@ -1,6 +1,5 @@
 # IocpServer
-**IOCP 모델을 활용하여 구현한 서버 라이브러리**
-
+**IOCP 모델을 활용하여 구현한 간단한 채팅 서버입니다.**
 ## 목차
 [1. IOCP 설계 구조](#iocp-설계-구조)
 
@@ -74,9 +73,7 @@ void IocpCore::dispatchEvent(uint32 timeoutMs)
 <hr>
 
 ## Packet 직렬화
-**메모리 상에 존재하는 데이터를 파일 혹은 네트워크로 송수신하기 위해 바이트 배열의 형태로 밀어넣는 작업**
-### Protocol Buffers
-구글에서 개발한 직렬화 라이브러리
+**Protocol Buffers 라이브러리를 사용하여 구현하였습니다.**
 ### Packet 설계
 ![image](https://github.com/Wseop/IocpServer/assets/18005580/fc5d4189-b753-4b55-8347-7f2c08ca6765)
 - Header
@@ -121,14 +118,14 @@ void PacketHandler::handlePacket(shared_ptr<Session> session, BYTE* packet)
 	packetHandler[packetTypeIndex](session, payload, payloadSize);
 }
 ```
-- Ping Packet 역직렬화 예시
+- Login Packet 역직렬화 예시
 ```cpp
-void ServerPacketHandler::handlePing(shared_ptr<Session> session, BYTE* payload, uint32 payloadSize)
+void ServerPacketHandler::handleC_Login(shared_ptr<Session> session, BYTE* payload, uint32 payloadSize)
 {
-	Protocol::Ping pingPayload;
-	if (pingPayload.ParseFromArray(payload, payloadSize))
+	Protocol::C_Login loginPayload;
+	if (loginPayload.ParseFromArray(payload, payloadSize))
 	{
-		session->send(makePing(&pingPayload));
+		gRoom->enterUser(session, loginPayload.userid());
 	}
 }
 ```
