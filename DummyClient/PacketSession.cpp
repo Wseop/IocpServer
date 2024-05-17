@@ -1,8 +1,9 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "PacketSession.h"
 #include "ClientPacketHandler.h"
 
-PacketSession::PacketSession()
+PacketSession::PacketSession() :
+	_bLogin(false)
 {
 }
 
@@ -12,10 +13,25 @@ PacketSession::~PacketSession()
 
 void PacketSession::login()
 {
-	cout << "ID �Է� :";
+	if (_bLogin)
+	{
+		return;
+	}
+
+	cout << "ID 입력 :";
 	cin >> _userId;
 
 	send(ClientPacketHandler::makeC_Login(_userId));
+}
+
+void PacketSession::sendMsg(const string& msg)
+{
+	send(ClientPacketHandler::makeC_Chat(msg));
+}
+
+void PacketSession::recvMsg(const string& msg)
+{
+	cout << msg << endl;
 }
 
 void PacketSession::onConnected()

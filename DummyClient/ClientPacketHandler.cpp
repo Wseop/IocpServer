@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "ClientPacketHandler.h"
 #include "Protocol.pb.h"
 #include "PacketSession.h"
@@ -8,6 +8,7 @@ void ClientPacketHandler::init()
 	PacketHandler::init();
 	
 	packetHandler[static_cast<uint16>(EPacketType::S_Login)] = handleS_Login;
+	packetHandler[static_cast<uint16>(EPacketType::S_Chat)] = handleS_Chat;
 }
 
 shared_ptr<SendBuffer> ClientPacketHandler::makeC_Login(const string& userId)
@@ -17,6 +18,13 @@ shared_ptr<SendBuffer> ClientPacketHandler::makeC_Login(const string& userId)
 	return makeSendBuffer(EPacketType::C_Login, &payload);
 }
 
+shared_ptr<SendBuffer> ClientPacketHandler::makeC_Chat(const string& msg)
+{
+	Protocol::C_Chat payload;
+	payload.set_msg(msg);
+	return makeSendBuffer(EPacketType::C_Chat, &payload);
+}
+
 void ClientPacketHandler::handleS_Login(shared_ptr<Session> session, BYTE* payload, uint32 payloadSize)
 {
 	Protocol::S_Login loginPayload;
@@ -24,17 +32,34 @@ void ClientPacketHandler::handleS_Login(shared_ptr<Session> session, BYTE* paylo
 	{
 		if (loginPayload.success())
 		{
-			cout << "·Î±×ÀÎ ¼º°ø" << endl;
+			cout << "ë¡œê·¸ì¸ ì„±ê³µ" << endl;
+			
+			if (shared_ptr<PacketSession> packetSession = dynamic_pointer_cast<PacketSession>(session))
+			{
+				packetSession->setLogin(true);
+			}
 		}
 		else
 		{
-			// ·Î±×ÀÎ ½ÇÆÐ. Àç½Ãµµ
-			cout << "·Î±×ÀÎ ½ÇÆÐ" << endl;
+			// ë¡œê·¸ì¸ ì‹¤íŒ¨. ìž¬ì‹œë„
+			cout << "ë¡œê·¸ì¸ ì‹¤íŒ¨" << endl;
 
 			if (shared_ptr<PacketSession> packetSession = dynamic_pointer_cast<PacketSession>(session))
 			{
 				packetSession->login();
 			}
+		}
+	}
+}
+
+void ClientPacketHandler::handleS_Chat(shared_ptr<Session> session, BYTE* payload, uint32 payloadSize)
+{
+	Protocol::S_Chat chatPayload;
+	if (chatPayload.ParseFromArray(payload, payloadSize))
+	{
+		if (shared_ptr<PacketSession> packetSession = dynamic_pointer_cast<PacketSession>(session))
+		{
+			packetSession->recvMsg(chatPayload.msg());
 		}
 	}
 }

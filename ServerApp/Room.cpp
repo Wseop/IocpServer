@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Room.h"
 #include "JobQueue.h"
 #include "Job.h"
@@ -26,22 +26,35 @@ void Room::exitUser(const string& userId)
 	_jobQueue->pushJob(make_shared<Job>(shared_from_this(), &Room::_exitUser, userId));
 }
 
+void Room::handleChat(shared_ptr<Session> session, const string& msg)
+{
+	_jobQueue->pushJob(make_shared<Job>(shared_from_this(), &Room::_handleChat, dynamic_pointer_cast<PacketSession>(session), msg));
+}
+
+void Room::broadcast(shared_ptr<SendBuffer> sendBuffer)
+{
+	for (auto iter = _users.begin(); iter != _users.end(); iter++)
+	{
+		iter->second->send(sendBuffer);
+	}
+}
+
 void Room::_enterUser(shared_ptr<PacketSession> session, string userId)
 {
 	auto userIt = _users.find(userId);
 	if (userIt == _users.end())
 	{
-		// ·Î±×ÀÎ ¼º°ø. À¯Àú Ãß°¡
+		// ë¡œê·¸ì¸ ì„±ê³µ. ìœ ì € ì¶”ê°€
 		_users[userId] = session;
 		session->setUserId(userId);
 
-		cout << format("[Room] {} ÀÔÀå.", userId) << endl;
+		cout << format("[Room] {} Enter.", userId) << endl;
 
 		session->send(ServerPacketHandler::makeS_Login(true));
 	}
 	else
 	{
-		// ÀÌ¹Ì Á¸ÀçÇÏ´Â ID. ·Î±×ÀÎ ½ÇÆÐ packet Àü¼Û
+		// ì´ë¯¸ ì¡´ìž¬í•˜ëŠ” ID. ë¡œê·¸ì¸ ì‹¤íŒ¨ packet ì „ì†¡
 		session->send(ServerPacketHandler::makeS_Login(false));
 	}
 }
@@ -51,8 +64,16 @@ void Room::_exitUser(string userId)
 	auto userIt = _users.find(userId);
 	if (userIt != _users.end())
 	{
-		// À¯Àú »èÁ¦
+		// ìœ ì € ì‚­ì œ
 		_users.erase(userId);
-		cout << format("[Room] {} ÅðÀå.", userId) << endl;
+		cout << format("[Room] {} Exit.", userId) << endl;
+
+		broadcast(ServerPacketHandler::makeS_Chat(format("[{}] Exit.", userId)));
 	}
+}
+
+void Room::_handleChat(shared_ptr<PacketSession> session, string msg)
+{
+	string userMsg = format("[{}] {}", session->getUserId(), msg);
+	broadcast(ServerPacketHandler::makeS_Chat(userMsg));
 }

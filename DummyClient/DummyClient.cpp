@@ -15,5 +15,16 @@ int main()
     shared_ptr<Session> session = service->createSession();
     assert(session->connect());
 
-    while (true);
+    while (true)
+    {
+        // 1초마다 메세지 전송
+        if (shared_ptr<PacketSession> packetSession = dynamic_pointer_cast<PacketSession>(session))
+        {
+            if (packetSession->IsLoggedIn())
+            {
+                packetSession->sendMsg(format("Hello I'm {}", packetSession->getUserId()));
+            }
+        }
+        this_thread::sleep_for(1s);
+    }
 }

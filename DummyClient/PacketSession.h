@@ -10,7 +10,12 @@ public:
 
 	inline const string& getUserId() const { return _userId; }
 
+	inline bool IsLoggedIn() const { return _bLogin; }
+	inline void setLogin(bool bFlag) { _bLogin = bFlag; }
+
 	void login();
+	void sendMsg(const string& msg);
+	void recvMsg(const string& msg);
 
 protected:
 	virtual void onConnected() override;
@@ -20,5 +25,6 @@ protected:
 
 private:
 	string _userId;
+	bool _bLogin;
 };
 

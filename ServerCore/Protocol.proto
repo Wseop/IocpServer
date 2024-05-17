@@ -15,3 +15,13 @@ message S_Login
 {
 	bool success = 1;
 }
+
+message C_Chat
+{
+	string msg = 1;
+}
+
+message S_Chat
+{
+	string msg = 1;
+}
