@@ -51,6 +51,9 @@ void Room::_enterUser(shared_ptr<PacketSession> session, string userId)
 		cout << format("[Room] {} Enter.", userId) << endl;
 
 		session->send(ServerPacketHandler::makeS_Login(true));
+
+		// 입장 메세지 broadcast
+		broadcast(ServerPacketHandler::makeS_Chat(format("========== [{}] Enter ==========", userId)));
 	}
 	else
 	{
@@ -68,7 +71,8 @@ void Room::_exitUser(string userId)
 		_users.erase(userId);
 		cout << format("[Room] {} Exit.", userId) << endl;
 
-		broadcast(ServerPacketHandler::makeS_Chat(format("[{}] Exit.", userId)));
+		// 퇴장 메세지 broadcast
+		broadcast(ServerPacketHandler::makeS_Chat(format("========== [{}] Exit ==========", userId)));
 	}
 }
 

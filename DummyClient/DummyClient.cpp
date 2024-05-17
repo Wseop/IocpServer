@@ -23,12 +23,12 @@ int main()
         // 로그인 대기
         while (session->IsLoggedIn() == false);
 
-        // 1초 간격으로 메세지 전송. 10 ~ 30회 랜덤
-        int32 count = rand() % 30 + 10;
+        // 3초 간격으로 메세지 전송. 1 ~ 10회 랜덤
+        int32 count = rand() % 10 + 1;
         for (uint32 i = 0; i < count; i++)
         {
-            session->sendMsg(format("Hello I'm [{}]", session->getUserId()));
-            this_thread::sleep_for(1s);
+            session->sendMsg(format("Hello I'm {}", session->getUserId()));
+            this_thread::sleep_for(3s);
         }
 
         // 접속 종료
