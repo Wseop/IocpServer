@@ -55,7 +55,7 @@ void IocpCore::dispatchEvent(uint32 timeoutMs)
 			// disconnected.
 			break;
 		default:
-			cout << "[IocpCore] dispatch error : %d" << errorCode << endl;
+			cout << "[IocpCore] dispatch error : " << errorCode << endl;
 			break;
 		}
 	}
