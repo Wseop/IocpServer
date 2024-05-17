@@ -10,9 +10,19 @@ PacketSession::~PacketSession()
 {
 }
 
+void PacketSession::login()
+{
+	cout << "ID ют╥б :";
+	cin >> _userId;
+
+	send(ClientPacketHandler::makeC_Login(_userId));
+}
+
 void PacketSession::onConnected()
 {
 	cout << "[PacketSession] connected to server." << endl;
+
+	login();
 }
 
 void PacketSession::onDisconnected()

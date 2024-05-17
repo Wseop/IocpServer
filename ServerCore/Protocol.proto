@@ -5,3 +5,13 @@ import "Struct.proto";
 
 message Ping
 {}
+
+message C_Login
+{
+	string userId = 1;
+}
+
+message S_Login
+{
+	bool success = 1;
+}

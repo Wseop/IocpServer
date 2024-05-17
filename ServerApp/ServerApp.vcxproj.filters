@@ -27,6 +27,9 @@
     <ClCompile Include="ServerPacketHandler.cpp">
       <Filter>Network</Filter>
     </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -40,6 +43,9 @@
     </ClInclude>
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>App</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,6 +6,8 @@
 enum class EPacketType : uint16
 {
 	Ping,
+	C_Login,
+	S_Login,
 };
 
 struct PacketHeader
