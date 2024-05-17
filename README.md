@@ -84,7 +84,7 @@ void IocpCore::dispatchEvent(uint32 timeoutMs)
   - Packet의 크기 : Header의 크기 + Payload의 크기
 - Payload : Protocol Buffers로 정의한 message <br>
 ### 직렬화
-#### 아래 과정을 통해 전송할 데이터를 바이트의 배열(`vector<BYTE>`) 형태로 변환
+#### 아래 과정을 통해 전송할 Packet을 바이트의 배열(`vector<BYTE>`) 형태로 변환
 1. 데이터의 크기 계산
 2. `SendBuffer`를 생성하여 `Header` 데이터 밀어넣기
 3. `Header`의 뒤에 이어서 `Payload` 데이터 밀어넣기
