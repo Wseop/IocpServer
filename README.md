@@ -1,5 +1,12 @@
 # IocpServer
 **IOCP 모델을 활용하여 구현한 간단한 채팅 서버입니다.**
+## 실행 예시
+- 3개의 클라이언트로 ID를 입력후 접속하여 일정시간 메세지를 전송후 퇴장.
+- 서버는 메세지를 broadcast.
+- 다시 접속하여 반복. <br>
+
+[Desktop-2024.05.17-16.08.44.09.webm](https://github.com/Wseop/IocpServer/assets/18005580/3a688005-4d26-487b-a2e1-9270bf9d0eda)
+
 ## 목차
 [1. IOCP 설계 구조](#iocp-설계-구조)
 
