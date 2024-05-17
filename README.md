@@ -81,7 +81,7 @@ void IocpCore::dispatchEvent(uint32 timeoutMs)
 ![image](https://github.com/Wseop/IocpServer/assets/18005580/fc5d4189-b753-4b55-8347-7f2c08ca6765)
 - Header
   - Packet의 타입
-  - Packet의 크기 : PacketHeader의 크기 + Payload의 크기
+  - Packet의 크기 : Header의 크기 + Payload의 크기
 - Payload : Protocol Buffers로 정의한 message <br>
 ### 직렬화
 #### 아래 과정을 통해 전송할 데이터를 바이트의 배열(`vector<BYTE>`) 형태로 변환
